@@ -150,10 +150,17 @@ namespace jumps.umbraco.usync
             if (!item.IsTopMostItem())
             {
                 LogHelper.Debug<uSync>("is Top Most [{0}]", ()=> item.IsTopMostItem());
-                if (item.Parent != null)
+                try
                 {
-                    LogHelper.Debug<uSync>("parent [{0}]", () => item.Parent.key); 
-                    return GetTop(item.Parent);
+                    if (item.Parent != null)
+                    {
+                        LogHelper.Debug<uSync>("parent [{0}]", () => item.Parent.key);
+                        return GetTop(item.Parent);
+                    }
+                }
+                catch (ArgumentException aex)
+                {
+                    LogHelper.Info<uSync>("Argument Exception - basically Parent is Null");
                 }
             }
 
